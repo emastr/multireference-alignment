@@ -1,0 +1,7 @@
+Metadata-Version: 2.1
+Name: mra
+Version: 1.0.0
+Requires-Dist: matplotlib
+Requires-Dist: numpy
+Requires-Dist: scipy
+Requires-Dist: jax

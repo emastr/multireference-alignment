@@ -60,9 +60,9 @@ def align_fft(xfft, yfft):
 ## Moments
 @jit
 def project_moments(xfft, acf_fft, mean):
-    xfft = xfft.at[0].set(mean)
+    xfft = xfft.at[0].set(mean*(len(xfft)-1))
     xfft = xfft.at[1:].set(jnp.where(xfft[1:] != 0, \
-        xfft[1:]*acf_fft[1:]**0.5 / jnp.abs(xfft[1:]), 0))
+                           xfft[1:]*acf_fft[1:]**0.5 / jnp.abs(xfft[1:]), 0))
     return xfft
 
 @jit
@@ -88,12 +88,15 @@ def loss_fft(xfft, yfft):
 
 ############## METHODS #####################################
 
-def fix_point_iter(x0fft, yfft, acf_fft, mean, tol, maxiter, alpha=0.5, callback=None):
+def fix_point_iter(x0fft, yfft, acf_fft, mean, tol, maxiter, alpha=0.5, callback=None, project=True):
     res = tol + 1.
     i = 0
     xfft = x0fft
     while (res > tol) and i < maxiter:
-        xfft_new = (1 - alpha) * xfft + alpha * align_average_and_project(xfft, yfft, acf_fft, mean)
+        if project:
+            xfft_new = (1 - alpha) * xfft + alpha * align_average_and_project(xfft, yfft, acf_fft, mean)
+        else:
+            xfft_new = (1 - alpha) * xfft + alpha * align_average(xfft, yfft)
         res = relative_error(ifft(xfft), ifft(xfft_new))
         xfft = xfft_new
         i += 1

@@ -1,10 +1,6 @@
 
 import sys
-root = '/home/emastr/github/phd/projects/vahid_project/'
-sys.path.append('..')
-sys.path.append(f'{root}src/')
-sys.path.append(f'{root}util/')
-sys.path.append(f'{root}data/')
+root = '/home/emastr/github/multireference-alignment/'
 from multiprocessing import Pool
 from alignment_vmap import *
 import numpy as np
@@ -97,7 +93,7 @@ def average_std(M):
         return wrapper
     return decorator
 
-@average_std(5)
+@average_std(20)
 def run_methods(key, x, N, noise_std, methods):
     y, noise, shift = get_samples(key, x, noise_std, N)
 
@@ -126,11 +122,11 @@ def run_methods(key, x, N, noise_std, methods):
 
 
 # Main parameters
-L = 101
+L = 41
 N = int(1e3)
 t, x = get_signal(L)
 
-noise_stds = jnp.logspace(-2, 1., 10)
+noise_stds = jnp.logspace(-2, 1., 20)
 print(noise_stds)
 keys = random.split(random.PRNGKey(0), len(noise_stds))
 
@@ -159,6 +155,7 @@ means = jnp.array([e['mean'] for e in errs])
 stds = jnp.array([e['std'] for e in errs])
 
 print(stds.shape)
+
 
 for j, name in enumerate(['Normalized MSE', 'Computation time']):
     fig = plt.figure()

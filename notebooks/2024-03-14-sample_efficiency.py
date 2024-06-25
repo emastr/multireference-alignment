@@ -238,8 +238,8 @@ else:
             plt.text(x, y, strings[j], backgroundcolor="white")
             
     ss = STD_mat[0, :]
-    plt.plot(ss, [(2000*s)**2 for s in ss], '--', color='black', label='$O(N^2)$')
-    plt.plot(ss, [(100*s)**3 for s in ss], '--', color='black', label='$O(N^3)$')
+    plt.plot(ss, [(2000*s)**2 for s in ss], '--', color='black', label='$O(\sigma^2)$')
+    plt.plot(ss, [(100*s)**3 for s in ss], '--', color='black', label='$O(\sigma^3)$')
     plt.legend(loc="lower right")
     plt.grid(True, which='both', linewidth=0.5)
     plt.yscale("log")
