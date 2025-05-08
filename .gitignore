@@ -9,3 +9,4 @@
 *.Tensor
 */data
 *__pycache__
+/notebooks/side_projects/figures
